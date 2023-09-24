@@ -29,6 +29,12 @@ function Recipe() {
           Fly Mark
         </div>
       </header>
+      <nav className='nav_bar'>
+        <div className='list'>
+          <a href='/' className='item'>トップ</a>
+          <a href='/input/' className='item'>投稿</a>
+        </div>
+      </nav>
       <section className="recipe">
         <RecipeTop/>
         <StepList steps={steps}/>

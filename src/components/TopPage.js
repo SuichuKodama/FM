@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useState } from 'react';
-import { css } from '@emotion/react';
 import * as Api from "../service/firebase"
 import CardList from './CardList';
 import Footer from './Footer';
@@ -27,6 +26,11 @@ function TopPage() {
           Fly Mark
         </div>
       </header>
+      <nav className='nav_bar'>
+        <div className='list'>
+          <a href='/input/' className='item'>投稿</a>
+        </div>
+      </nav>
 
       <main className='list_container'>
         <section className='hero'>

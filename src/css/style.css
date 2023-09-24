@@ -24,6 +24,39 @@
 }
 
 /* --------------------
+      Navigation
+--------------------- */
+
+.nav_bar {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--primary-s-color);
+}
+
+.nav_bar .list {
+  display: flex;
+} 
+
+.nav_bar .item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  flex: 1;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--primary-color);
+  border-right: solid 1px var(--primary-color);
+}
+
+.nav_bar .item:last-child {
+  border-right: none;
+}
+
+/* --------------------
         Footer
 --------------------- */
 .footer {
