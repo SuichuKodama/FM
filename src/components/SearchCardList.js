@@ -26,7 +26,27 @@ export default function SearchCardList(props) {
 
   return (
     <div>
-      <h2>search</h2>
+      <header className="header">
+        <div className="text">Fly Mark</div>
+      </header>
+      <nav className="nav_bar">
+        <div className="list">
+          <a href="/" className="item">
+            トップ
+          </a>
+          <a href="/input/" className="item">
+            投稿
+          </a>
+        </div>
+      </nav>
+      <h2
+        css={css`
+          text-align: center;
+          margin-top: 20px;
+        `}
+      >
+        Test Search
+      </h2>
       <div className="card_list">
         {cardList.map((card) => (
           <a key={card.id} href={"/recipe/" + card.id} className="card">
