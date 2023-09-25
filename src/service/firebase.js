@@ -1,7 +1,8 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-import "firebase/compat/storage"
+import { enableNetwork } from "firebase/firestore";
+import "firebase/compat/storage";
 
 firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -17,15 +18,14 @@ firebase.initializeApp({
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-export const initGet = async() => {
-  const post = await db.collection("posts")
-  .orderBy("date", "desc");
+await enableNetwork(db);
 
+export const initGet = async () => {
+  const post = await db.collection("posts").orderBy("date", "desc");
 
   return post.get().then((snapShot) => {
     let cards = [];
     snapShot.forEach((doc) => {
-
       console.log(doc);
       console.log(doc.data());
 
@@ -37,12 +37,12 @@ export const initGet = async() => {
         date: doc.data().date,
         tags: doc.data().tags,
         materials: doc.data().materials,
-      })
-    })
+      });
+    });
 
     return cards;
-  })
-}
+  });
+};
 
 export const getCollectionById = async (postId) => {
   try {
@@ -69,10 +69,12 @@ export const getCollectionById = async (postId) => {
   }
 };
 
-
-export const getStep = async(id) => {
-  const step = await db.collection("posts").doc(id).collection("step")
-  .orderBy("step", "asc");
+export const getStep = async (id) => {
+  const step = await db
+    .collection("posts")
+    .doc(id)
+    .collection("step")
+    .orderBy("step", "asc");
 
   return step.get().then((snapShot) => {
     let steps = [];
@@ -84,17 +86,24 @@ export const getStep = async(id) => {
         imgURL: doc.data().imgURL,
         step: doc.data().step,
         note: doc.data().note,
-      })
-    })
+      });
+    });
 
     return steps;
-  })
-}
+  });
+};
 
-export const addPostAsync = async(id, title, mvURL, description, tags, materials) => {
+export const addPostAsync = async (
+  id,
+  title,
+  mvURL,
+  description,
+  tags,
+  materials
+) => {
   let date = new Date();
   // 'posts'というコレクションにデータを追加
-  await db.collection('posts').doc(id).set({
+  await db.collection("posts").doc(id).set({
     title: title,
     mvURL: mvURL,
     text: description,
@@ -103,11 +112,11 @@ export const addPostAsync = async(id, title, mvURL, description, tags, materials
     materials: materials,
   });
 
-  let postRef = db.collection('posts').doc(id);
+  let postRef = db.collection("posts").doc(id);
   return postRef;
-}
+};
 
-export const addStepAsync = async(id, step) => {
+export const addStepAsync = async (id, step) => {
   const stepDoc = await db.collection("posts").doc(id).collection("step").add({
     step: step.step, // 連番のステップを設定
     note: step.note, // レシピステップのテキスト
@@ -115,34 +124,55 @@ export const addStepAsync = async(id, step) => {
   });
 
   return stepDoc;
-}
+};
 
-export const getMvURLAsync= async(id) => {
-  const postId = id.postId;
-
-  // Firestoreのコレクションとコレクションフォルダの参照を動的に設定
-  const collectionFolderRef = storage.ref().child(`${postId}`);
-
-  return collectionFolderRef;
-}
-
-export const appStepImageAsync = async(id, file, imgFileName) => {
-  const collectionId = id.collectionId;
-
+export const uploadMvImgAsync = async (id, file, mvFile) => {
   // ストレージにファイルをアップロード
-  const imgFileRef = storage.ref(`${collectionId}`).child(`step/${imgFileName}`);
+  const mvFileRef = storage.ref(`mv/${id}`).child(mvFile.name);
+  await mvFileRef.put(file);
+  let imgURL = await mvFileRef.getDownloadURL();
+  return imgURL;
+};
 
-  // ファイルを Firebase Storage にアップロード
-  await imgFileRef.put(file);
+export const uploadImageAsync = async (postId, file) => {
+  // ストレージにファイルをアップロード
+  let imgFileRef = storage.ref(`/step/${postId}`).child(file.name);
 
-  // アップロードが完了したら、ダウンロード URL を取得
-  await imgFileRef.getDownloadURL();
-}
+  try {
+    // ファイルを Firebase Storage にアップロード
+    await imgFileRef.put(file);
 
+    // アップロードが完了したら、ダウンロード URL を取得
+    let imgURL = await imgFileRef.getDownloadURL();
+    return imgURL;
+  } catch (error) {
+    console.error("ファイルのアップロードエラー:", error);
+  }
+};
 
+export const performSearchAsync = async (word) => {
+  try {
+    // コレクション名を指定してクエリを作成
+    // "tags" フィールドが指定の文字列と一致する条件
+    const querySnapshot = await db
+      .collection("posts")
+      .where("tags", "array-contains", word)
+      .get();
 
+    // クエリ結果を配列に変換して返す
+    const cards = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      title: doc.data().title,
+      mvURL: doc.data().mvURL,
+      text: doc.data().text,
+      date: doc.data().date,
+      tags: doc.data().tags,
+      materials: doc.data().materials,
+    }));
 
-
-
-
-
+    return cards;
+  } catch (error) {
+    console.error("検索エラー:", error);
+    throw error;
+  }
+};

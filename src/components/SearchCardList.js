@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from "react";
 
-export default function CardList(props) {
+export default function SearchCardList(props) {
   const [cardList, setCardList] = useState([]);
 
   useEffect(() => {
@@ -25,16 +25,23 @@ export default function CardList(props) {
   }, [props.cards]);
 
   return (
-    <section>
+    <div>
+      <h2>search</h2>
       <div className="card_list">
         {cardList.map((card) => (
-          <a key={card.id} href={'/recipe/' + card.id} className="card">
-            <img src={card.mvURL} alt="フライの画像" css={css`width: 100%;`} />
+          <a key={card.id} href={"/recipe/" + card.id} className="card">
+            <img
+              src={card.mvURL}
+              alt="フライの画像"
+              css={css`
+                width: 100%;
+              `}
+            />
             <div className="title">{card.title}</div>
             <div className="text">{card.text}</div>
             <div className="tag_list">
               {card.materials.map((tag) => (
-                <a className="material" href='/recipe/' key={tag}>
+                <a className="material" href="/recipe/" key={tag}>
                   <span>#</span>
                   <span>{tag}</span>
                 </a>
@@ -42,7 +49,7 @@ export default function CardList(props) {
             </div>
             <div className="tag_list">
               {card.tags.map((tag) => (
-                <a className="tag" href='/recipe/' key={tag}>
+                <a className="tag" href="/recipe/" key={tag}>
                   <span>#</span>
                   <span>{tag}</span>
                 </a>
@@ -51,6 +58,6 @@ export default function CardList(props) {
           </a>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

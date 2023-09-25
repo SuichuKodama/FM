@@ -2,7 +2,6 @@
 import { css } from "@emotion/react";
 import React, { useState } from 'react';
 import * as Api from "../service/firebase"
-import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -70,41 +69,15 @@ function Input() {
     }
   };
 
-  async function uploadMvImgeAsync(id, file) {
-    // ストレージにファイルをアップロード
-    const storage = firebase.storage();
-    const mvFileRef = storage.ref(`mv/${id}`).child(mvFile.name);
-    await mvFileRef.put(file);
-    let imgURL = await mvFileRef.getDownloadURL();
-    return imgURL;
-  }
-
-  async function uploadImageAsync(postId, file) {
-    // ストレージにファイルをアップロード
-    let storage = firebase.storage();
-    let imgFileRef = storage.ref(`/step/${postId}`).child(file.name);
-
-    try {
-      // ファイルを Firebase Storage にアップロード
-      await imgFileRef.put(file);
-
-      // アップロードが完了したら、ダウンロード URL を取得
-      let imgURL = await imgFileRef.getDownloadURL();
-      return imgURL;
-    } catch (error) {
-      console.error('ファイルのアップロードエラー:', error);
-    }
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     let uuid = uuidv4();
-    let mvURL = mvFile? await uploadMvImgeAsync(uuid, mvFile):'';
+    let mvURL = mvFile? await Api.uploadMvImgAsync(uuid, mvFile):'';
     let postRef = await Api.addPostAsync(uuid, title, mvURL, description, tags, materials);
 
     let uploadImageList = [];
     await Promise.all(files.map(async (file) => {
-      let imgURL = await uploadImageAsync(postRef.id, file.file);
+      let imgURL = await Api.uploadImageAsync(postRef.id, file.file);
       uploadImageList.push({ index: file.index, imgURL: imgURL });
     }));
 

@@ -32,7 +32,7 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: var(--primary-s-color);
+  background-color: var(--primary-color);
 }
 
 .nav_bar .list {
@@ -47,9 +47,10 @@
   flex: 1;
   font-size: 18px;
   font-weight: bold;
+  line-height: 1;
   text-decoration: none;
-  color: var(--primary-color);
-  border-right: solid 1px var(--primary-color);
+  color: var(--primary-s-color);
+  border-right: solid 1px var(--primary-s-color);
 }
 
 .nav_bar .item:last-child {
@@ -109,7 +110,7 @@
 }
 
 .card .tag_list {
-  display: inline-flex;
+  display: flex;
   flex-wrap: wrap;
   gap: calc(10 / var(--basis-window-size) * 100vw);
   margin-top: calc(10 / var(--basis-window-size) * 100vw);
