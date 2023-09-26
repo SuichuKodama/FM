@@ -3,20 +3,25 @@ import React, { useEffect, useState } from "react";
 import * as Api from "../service/firebase";
 import CardList from "./CardList";
 import Footer from "./Footer";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function TopPage() {
   // cardsステートをuseStateを使用して初期化
   const [cards, setCards] = useState([]);
   // const [searchResults, setSearchResults] = useState([]);
-  const [word, setWord] = useState("");
-
-  const navigate = useNavigate();
+  const [keyword, setKeyword] = useState("");
 
   // Post取得
   useEffect(() => {
     fetch();
   }, []);
+
+  const location = useLocation();
+  const searchQuery = location.search;
+
+  // URLからクエリ文字列を取り出す
+  const query = new URLSearchParams(searchQuery);
+  const searchKeyword = query.get("keyword"); // tagパラメーターの値を取得
 
   const fetch = async () => {
     const data = await Api.initGet();
@@ -25,8 +30,10 @@ function TopPage() {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    navigate(`/search?tag=${word}`);
-    setWord("");
+    // navigate(`/search?tag=${word}`);
+    // setWord("");
+    const searchResult = await Api.searchAsync(keyword);
+    await setCards(searchResult);
   };
 
   return (
@@ -52,9 +59,9 @@ function TopPage() {
           <div>
             <input
               type="text"
-              value={word}
-              onChange={(e) => setWord(e.target.value)}
-              placeholder="キーワード検索"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              placeholder="タグ検索"
             />
             <button onClick={handleSearch}>検索</button>
           </div>

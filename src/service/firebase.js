@@ -20,28 +20,33 @@ const storage = firebase.storage();
 
 await enableNetwork(db);
 
-export const initGet = async () => {
-  const post = await db.collection("posts").orderBy("date", "desc");
+function convertToPost(snapShot) {
+  let cards = [];
+  snapShot.forEach((doc) => {
+    console.log(doc);
+    console.log(doc.data());
 
-  return post.get().then((snapShot) => {
-    let cards = [];
-    snapShot.forEach((doc) => {
-      console.log(doc);
-      console.log(doc.data());
-
-      cards.push({
-        id: doc.id,
-        title: doc.data().title,
-        mvURL: doc.data().mvURL,
-        text: doc.data().text,
-        date: doc.data().date,
-        tags: doc.data().tags,
-        materials: doc.data().materials,
-      });
+    cards.push({
+      id: doc.id,
+      title: doc.data().title,
+      mvURL: doc.data().mvURL,
+      text: doc.data().text,
+      date: doc.data().date,
+      tags: doc.data().tags,
+      materials: doc.data().materials,
     });
-
-    return cards;
   });
+  return cards;
+}
+
+export const initGet = async () => {
+  const posts = await db
+    .collection("posts")
+    .orderBy("date", "desc")
+    .limit(10)
+    .get();
+
+  return convertToPost(posts);
 };
 
 export const getCollectionById = async (postId) => {
@@ -150,27 +155,26 @@ export const uploadImageAsync = async (postId, file) => {
   }
 };
 
-export const performSearchAsync = async (word) => {
+export const searchAsync = async (keyword) => {
   try {
-    // コレクション名を指定してクエリを作成
-    // "tags" フィールドが指定の文字列と一致する条件
-    const querySnapshot = await db
-      .collection("posts")
-      .where("tags", "array-contains", word)
-      .get();
-
+    let posts;
+    if (keyword.startsWith("#")) {
+      // コレクション名を指定してクエリを作成
+      // "tags" フィールドが指定の文字列と一致する条件
+      posts = await db
+        .collection("posts")
+        .where("tags", "array-contains", keyword.substring(1))
+        .limit(10)
+        .get();
+    } else {
+      posts = await db
+        .collection("posts")
+        .where("materials", "array-contains", keyword)
+        .limit(10)
+        .get();
+    }
     // クエリ結果を配列に変換して返す
-    const cards = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      title: doc.data().title,
-      mvURL: doc.data().mvURL,
-      text: doc.data().text,
-      date: doc.data().date,
-      tags: doc.data().tags,
-      materials: doc.data().materials,
-    }));
-
-    return cards;
+    return convertToPost(posts);
   } catch (error) {
     console.error("検索エラー:", error);
     throw error;

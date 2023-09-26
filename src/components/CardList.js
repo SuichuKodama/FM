@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 export default function CardList(props) {
   const [cardList, setCardList] = useState([]);
@@ -28,21 +28,26 @@ export default function CardList(props) {
     <section>
       <div className="card_list">
         {cardList.map((card) => (
-          <a key={card.id} href={'/recipe/' + card.id} className="card">
-            <img src={card.mvURL} alt="フライの画像" css={css`width: 100%;`} />
+          <a key={card.id} href={"/recipe/" + card.id} className="card">
+            <img
+              src={card.mvURL}
+              alt="フライの画像"
+              css={css`
+                width: 100%;
+              `}
+            />
             <div className="title">{card.title}</div>
             <div className="text">{card.text}</div>
             <div className="tag_list">
               {card.materials.map((tag) => (
-                <a className="material" href='/recipe/' key={tag}>
-                  <span>#</span>
+                <a className="material" href="/recipe/" key={tag}>
                   <span>{tag}</span>
                 </a>
               ))}
             </div>
             <div className="tag_list">
               {card.tags.map((tag) => (
-                <a className="tag" href='/recipe/' key={tag}>
+                <a className="tag" href="/recipe/" key={tag}>
                   <span>#</span>
                   <span>{tag}</span>
                 </a>
