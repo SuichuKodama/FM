@@ -10,21 +10,20 @@ function TopPage() {
   const [cards, setCards] = useState([]);
   // const [searchResults, setSearchResults] = useState([]);
   const [keyword, setKeyword] = useState("");
+  const location = useLocation();
+  const searchQuery = location.search;
+  const query = new URLSearchParams(searchQuery);
 
   // Post取得
   useEffect(() => {
     fetch();
   }, []);
 
-  const location = useLocation();
-  const searchQuery = location.search;
-
-  // URLからクエリ文字列を取り出す
-  const query = new URLSearchParams(searchQuery);
-  const searchKeyword = query.get("keyword"); // tagパラメーターの値を取得
 
   const fetch = async () => {
-    const data = await Api.initGet();
+    let keyword = query.get("keyword");
+    setKeyword(keyword);
+    const data = await Api.searchAsync(keyword);
     await setCards(data);
   };
 

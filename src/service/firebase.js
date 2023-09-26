@@ -20,35 +20,6 @@ const storage = firebase.storage();
 
 await enableNetwork(db);
 
-function convertToPost(snapShot) {
-  let cards = [];
-  snapShot.forEach((doc) => {
-    console.log(doc);
-    console.log(doc.data());
-
-    cards.push({
-      id: doc.id,
-      title: doc.data().title,
-      mvURL: doc.data().mvURL,
-      text: doc.data().text,
-      date: doc.data().date,
-      tags: doc.data().tags,
-      materials: doc.data().materials,
-    });
-  });
-  return cards;
-}
-
-export const initGet = async () => {
-  const posts = await db
-    .collection("posts")
-    .orderBy("date", "desc")
-    .limit(10)
-    .get();
-
-  return convertToPost(posts);
-};
-
 export const getCollectionById = async (postId) => {
   try {
     const documentRef = db.collection("posts").doc(postId);
@@ -158,7 +129,14 @@ export const uploadImageAsync = async (postId, file) => {
 export const searchAsync = async (keyword) => {
   try {
     let posts;
-    if (keyword.startsWith("#")) {
+    if (keyword === null) {
+      posts = await db
+        .collection("posts")
+        .orderBy("date", "desc")
+        .limit(10)
+        .get();
+    }
+    else if (keyword.startsWith("#")) {
       // コレクション名を指定してクエリを作成
       // "tags" フィールドが指定の文字列と一致する条件
       posts = await db
@@ -174,9 +152,20 @@ export const searchAsync = async (keyword) => {
         .get();
     }
     // クエリ結果を配列に変換して返す
-    return convertToPost(posts);
+    let cards = [];
+    posts.forEach((doc) => {
+      cards.push({
+        id: doc.id,
+        title: doc.data().title,
+        mvURL: doc.data().mvURL,
+        text: doc.data().text,
+        date: doc.data().date,
+        tags: doc.data().tags,
+        materials: doc.data().materials,
+      });
+    });
+    return cards;
   } catch (error) {
-    console.error("検索エラー:", error);
     throw error;
   }
 };

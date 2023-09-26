@@ -40,14 +40,14 @@ export default function CardList(props) {
             <div className="text">{card.text}</div>
             <div className="tag_list">
               {card.materials.map((tag) => (
-                <a className="material" href="/recipe/" key={tag}>
+                <a className="material" href={"?keyword="+tag} key={tag}>
                   <span>{tag}</span>
                 </a>
               ))}
             </div>
             <div className="tag_list">
               {card.tags.map((tag) => (
-                <a className="tag" href="/recipe/" key={tag}>
+                <a className="tag" href={"?keyword=%23"+tag} key={tag}>
                   <span>#</span>
                   <span>{tag}</span>
                 </a>
