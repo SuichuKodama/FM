@@ -1,15 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { useState } from 'react';
-import * as Api from "../service/firebase"
-import 'firebase/compat/firestore';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useState } from "react";
+import * as Api from "../service/firebase";
+import "firebase/compat/firestore";
+import { v4 as uuidv4 } from "uuid";
 
 function Input() {
-
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [mvFile, setMvFile] = useState({});
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
   const [materials, setMaterials] = useState([]);
   const [tags, setTags] = useState([]);
   const [steps, setSteps] = useState([]);
@@ -17,15 +16,15 @@ function Input() {
 
   // 新しい材料の追加
   const addMaterial = () => {
-    setMaterials([...materials, '']); // 現在の材料一覧に新しい要素（空の文字列）を追加します
+    setMaterials([...materials, ""]); // 現在の材料一覧に新しい要素（空の文字列）を追加します
   };
 
   const addTag = () => {
-    setTags([...tags, '']);
+    setTags([...tags, ""]);
   };
 
   const addStep = () => {
-    setSteps([...steps, { note: '', imgURL: '' }]);
+    setSteps([...steps, { note: "", imgURL: "" }]);
   };
 
   // 特定の材料の値を変更
@@ -59,12 +58,11 @@ function Input() {
   };
 
   const handleStepImageChange = async (index, file) => {
-    let existingFile = files.find((f) => f.index === index)
+    let existingFile = files.find((f) => f.index === index);
     if (existingFile !== undefined) {
       existingFile.file = file;
       setFiles([...files]);
-    }
-    else {
+    } else {
       setFiles([...files, { index: index, file: file }]);
     }
   };
@@ -72,27 +70,38 @@ function Input() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let uuid = uuidv4();
-    let mvURL = mvFile? await Api.uploadMvImgAsync(uuid, mvFile):'';
-    let postRef = await Api.addPostAsync(uuid, title, mvURL, description, tags, materials);
+    let mvURL = mvFile ? await Api.uploadMvImgAsync(uuid, mvFile) : "";
+    let postRef = await Api.addPostAsync(
+      uuid,
+      title,
+      mvURL,
+      description,
+      tags,
+      materials
+    );
 
     let uploadImageList = [];
-    await Promise.all(files.map(async (file) => {
-      let imgURL = await Api.uploadImageAsync(postRef.id, file.file);
-      uploadImageList.push({ index: file.index, imgURL: imgURL });
-    }));
+    await Promise.all(
+      files.map(async (file) => {
+        let imgURL = await Api.uploadImageAsync(postRef.id, file.file);
+        uploadImageList.push({ index: file.index, imgURL: imgURL });
+      })
+    );
 
     // レシピステップを追加
-    await Promise.all(steps.map(async (step, index) => {
-      step.step = index + 1;
-      let uploadImage = uploadImageList.find((img) => img.index === index);
-      step.imgURL = uploadImage ? uploadImage.imgURL : '';
-      await Api.addStepAsync(postRef.id, step);
-    }));
+    await Promise.all(
+      steps.map(async (step, index) => {
+        step.step = index + 1;
+        let uploadImage = uploadImageList.find((img) => img.index === index);
+        step.imgURL = uploadImage ? uploadImage.imgURL : "";
+        await Api.addStepAsync(postRef.id, step);
+      })
+    );
 
     // フォームをリセット
-    setTitle('');
+    setTitle("");
     setMvFile({});
-    setDescription('');
+    setDescription("");
     setTags([]);
     setMaterials([]);
     setSteps([]);
@@ -100,21 +109,24 @@ function Input() {
 
   return (
     <>
-      <header css={css`
-        width: 100%;
-        height: 40px;
-        background-color: var(--primary-s-color);
-      `}>
+      <header
+        css={css`
+          width: 100%;
+          height: 40px;
+          background-color: var(--primary-s-color);
+        `}
+      >
         <div
           css={css`
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: var(--primary-color);
-        font-size: 11px;
-        line-height: 1;
-        `}>
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-color);
+            font-size: 11px;
+            line-height: 1;
+          `}
+        >
           レシピを書く
         </div>
       </header>
@@ -122,14 +134,30 @@ function Input() {
       <section>
         <form onSubmit={handleSubmit}>
           <div>
-            <input type="file" name="file" onChange={(e) => handleMvFileChange(e.target.files[0])} />
+            <input
+              type="file"
+              name="file"
+              onChange={(e) => handleMvFileChange(e.target.files[0])}
+            />
           </div>
           <div>
-            <label htmlFor="">タイトル<input type="text" value={title} onChange={(e) => setTitle(e.target.value)} /></label>
+            <label htmlFor="">
+              タイトル
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </label>
           </div>
           <div>
             <div>フライの説明</div>
-            <textarea name="" id="" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+            <textarea
+              name=""
+              id=""
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            ></textarea>
           </div>
           <div>
             <div>材料</div>
@@ -140,7 +168,9 @@ function Input() {
                     <input
                       type="text"
                       value={material}
-                      onChange={(e) => handleMaterialChange(index, e.target.value)}
+                      onChange={(e) =>
+                        handleMaterialChange(index, e.target.value)
+                      }
                     />
                   </div>
                 </li>
@@ -178,12 +208,16 @@ function Input() {
                     <input
                       type="text"
                       value={step.note}
-                      onChange={(e) => handleStepNoteChange(index, e.target.value)}
+                      onChange={(e) =>
+                        handleStepNoteChange(index, e.target.value)
+                      }
                     />
                     <input
                       type="file"
                       name="file"
-                      onChange={(e) => handleStepImageChange(index, e.target.files[0])}
+                      onChange={(e) =>
+                        handleStepImageChange(index, e.target.files[0])
+                      }
                     />
                   </div>
                 </li>

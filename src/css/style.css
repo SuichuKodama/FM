@@ -1,11 +1,39 @@
+:root {
+  --bg-color: #fff;
+  --primary-color: #02004B;
+  --primary-l-color: #182067;
+  --primary-m-color: #1E16FF;
+  --primary-s-color: #DFECF9;
+  --light-blue: #8CF0FF;
+  --yellow: #F2F700;
+  --bg-grey: #F1F5F8;
+  --basis-window-size: calc(100vh / 667);
+
+  @media screen and (max-width: 768px) {
+    --basis-window-size: calc(100vw / 375);
+  }
+}
+
+body {
+  background-color: var(--bg-color);
+}
+
 /* --------------------
         Header
 --------------------- */
 
 .header {
+  display: none;
   width: 100%;
   height: 40px;
   background-color: var(--primary-s-color);
+
+  @media screen and (max-width: 768px) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
 }
 
 .header .text {
@@ -19,8 +47,46 @@
   line-height: 1;
 }
 
-.list_container {
-  padding: calc(20 / var(--basis-window-size) * 100vw) 0 calc(40 / var(--basis-window-size) * 100vw);
+/* --------------------
+        Footer
+--------------------- */
+
+.footer {
+  width: 100%;
+  height: calc(100 * var(--basis-window-size));
+  background-color: var(--primary-s-color);
+  position: relative;
+  z-index: 1;
+}
+
+.footer .copy_right {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-color);
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* --------------------
+        Hero
+--------------------- */
+.hero_container {
+  width: calc(100% - calc(375 * var(--basis-window-size)) - calc(100 * var(--basis-window-size)));
+  height: 100vh;
+  background-color: pink;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero {
+
 }
 
 /* --------------------
@@ -28,11 +94,16 @@
 --------------------- */
 
 .nav_bar {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
+  position: relative;
   background-color: var(--primary-color);
+
+  @media screen and (max-width: 768px) {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--primary-color);
+  }
 }
 
 .nav_bar .list {
@@ -58,53 +129,45 @@
 }
 
 /* --------------------
-        Footer
---------------------- */
-.footer {
-  width: 100%;
-  height: 60px;
-  background-color: var(--primary-s-color);
-}
-
-.footer .text {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--primary-color);
-  font-size: 14px;
-  line-height: 1;
-}
-
-/* --------------------
       Card List
 --------------------- */
+.list_container {
+  padding: calc(20 * var(--basis-window-size)) 0 calc(100 * var(--basis-window-size));
+}
+
 .card_list {
+  width: calc(375 * var(--basis-window-size));
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: calc(100 * var(--basis-window-size));
   display: flex;
   flex-direction: column;
-  gap: calc(20 / var(--basis-window-size) * 100vw) 0;
-  margin-top: calc(30 / var(--basis-window-size) * 100vw);
+  gap: calc(20 * var(--basis-window-size)) 0;
 }
 
 .card {
-  width: calc(355 / var(--basis-window-size) * 100vw);
-  margin: auto;
+  width: 100%;
   background-color: var(--primary-s-color);
-  padding: calc(20 / var(--basis-window-size) * 100vw);
+  padding: calc(20 * var(--basis-window-size));
   text-decoration: none;
   color: var(--primary-color);
-  border-radius: calc(20 / var(--basis-window-size) * 100vw);
+  border-radius: calc(20 * var(--basis-window-size));
+}
+
+.card .main_image {
+  width: 100%;
+  max-width: 100%;
 }
 
 .card .title {
-  font-size: calc(16 / var(--basis-window-size) * 100vw);
+  font-size: calc(16 * var(--basis-window-size));
   font-weight: bold;
   line-height: 1;
   margin-top: 10px;
 }
 
 .card .text {
-  font-size: calc(14 / var(--basis-window-size) * 100vw);
+  font-size: calc(14 * var(--basis-window-size));
   line-height: 1.2;
   margin-top: 5px;
 }
@@ -112,8 +175,8 @@
 .card .tag_list {
   display: flex;
   flex-wrap: wrap;
-  gap: calc(10 / var(--basis-window-size) * 100vw);
-  margin-top: calc(10 / var(--basis-window-size) * 100vw);
+  gap: calc(10 * var(--basis-window-size));
+  margin-top: calc(10 * var(--basis-window-size));
 }
 
 .card .tag,
@@ -123,11 +186,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: calc(1 / var(--basis-window-size) * 100vw);
-  border-radius: calc(50 / var(--basis-window-size) * 100vw);
+  gap: calc(1 * var(--basis-window-size));
+  border-radius: calc(50 * var(--basis-window-size));
   background-color: var(--primary-l-color);
-  padding: calc(7 / var(--basis-window-size) * 100vw) calc(8 / var(--basis-window-size) * 100vw) calc(6 / var(--basis-window-size) * 100vw);
-  font-size: calc(11 / var(--basis-window-size) * 100vw);
+  padding: calc(7 * var(--basis-window-size)) calc(8 * var(--basis-window-size)) calc(6 * var(--basis-window-size));
+  font-size: calc(11 * var(--basis-window-size));
   line-height: 1;
   font-weight: bold;
   white-space: nowrap;
@@ -148,7 +211,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0 calc(20 / var(--basis-window-size) * 100vw);
+  gap: 0 calc(20 * var(--basis-window-size));
   background-color: var(--primary-s-color);
   color: var(--primary-color);
   position: fixed;
@@ -166,21 +229,21 @@
 }
 
 .recipe .fly_info {
-  margin-top: calc(10 / var(--basis-window-size) * 100vw);
-  margin-bottom: calc(4 / var(--basis-window-size) * 100vw);
+  margin-top: calc(10 * var(--basis-window-size));
+  margin-bottom: calc(4 * var(--basis-window-size));
 }
 
 .recipe .fly_info .name {
-  font-size: calc(18 / var(--basis-window-size) * 100vw);
+  font-size: calc(18 * var(--basis-window-size));
   font-weight: bold;
 }
 
 .recipe .fly_info .text {
-  font-size: calc(13 / var(--basis-window-size) * 100vw);
+  font-size: calc(13 * var(--basis-window-size));
   line-height: 1.5;
   letter-spacing: 0.03em;
-  margin-top: calc(16 / var(--basis-window-size) * 100vw);
-  padding: calc(10 / var(--basis-window-size) * 100vw) calc(14 / var(--basis-window-size) * 100vw);
+  margin-top: calc(16 * var(--basis-window-size));
+  padding: calc(10 * var(--basis-window-size)) calc(14 * var(--basis-window-size));
   background-color: var(--primary-s-color);
   border-radius: 10px;
   position: relative;
@@ -188,20 +251,20 @@
 
 .recipe .fly_info .text::after {
   content: '';
-  width: calc(16 / var(--basis-window-size) * 100vw);
-  height: calc(16 / var(--basis-window-size) * 100vw);
+  width: calc(16 * var(--basis-window-size));
+  height: calc(16 * var(--basis-window-size));
   background-color: var(--primary-s-color);
   clip-path: polygon(50% 0%, -10% 100%, 110% 100%);
   position: absolute;
-  top: calc(-12 / var(--basis-window-size) * 100vw);
-  left: calc(20 / var(--basis-window-size) * 100vw);
+  top: calc(-12 * var(--basis-window-size));
+  left: calc(20 * var(--basis-window-size));
 }
 
 .recipe .title {
-  font-size: calc(18 / var(--basis-window-size) * 100vw);
+  font-size: calc(18 * var(--basis-window-size));
   font-weight: bold;
-  margin-top: calc(40 / var(--basis-window-size) * 100vw);
-  padding-bottom: calc(10 / var(--basis-window-size) * 100vw);
+  margin-top: calc(40 * var(--basis-window-size));
+  padding-bottom: calc(10 * var(--basis-window-size));
   position: relative;
 }
 
@@ -219,12 +282,12 @@
 .recipe .materials .list {
   display: flex;
   flex-direction: column;
-  margin-top: calc(10 / var(--basis-window-size) * 100vw);
+  margin-top: calc(10 * var(--basis-window-size));
 }
 
 .recipe .materials .item {
-  font-size: calc(14 / var(--basis-window-size) * 100vw);
-  padding: calc(10 / var(--basis-window-size) * 100vw) calc(20 / var(--basis-window-size) * 100vw);
+  font-size: calc(14 * var(--basis-window-size));
+  padding: calc(10 * var(--basis-window-size)) calc(20 * var(--basis-window-size));
   border-bottom:  dashed 1px var(--primary-s-color);
 }
 
@@ -235,20 +298,20 @@
 .recipe .how_to .list {
   display: flex;
   flex-direction: column;
-  margin-top: calc(10 / var(--basis-window-size) * 100vw);
+  margin-top: calc(10 * var(--basis-window-size));
   counter-reset: number 0;
 }
 
 .recipe .how_to .item {
   display: flex;
   justify-content: flex-start;
-  gap: 0 calc(10 / var(--basis-window-size) * 100vw);
-  padding: calc(15 / var(--basis-window-size) * 100vw) 0;
+  gap: 0 calc(10 * var(--basis-window-size));
+  padding: calc(15 * var(--basis-window-size)) 0;
   border-bottom:  dashed 1px var(--primary-s-color);
 }
 
 .recipe .how_to .item {
-  font-size: calc(14 / var(--basis-window-size) * 100vw);
+  font-size: calc(14 * var(--basis-window-size));
   letter-spacing: 0.05em;
   line-height: 1.8;
   font-feature-settings: "palt";
@@ -259,11 +322,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: calc(30 / var(--basis-window-size) * 100vw);
-  height: calc(30 / var(--basis-window-size) * 100vw);
+  width: calc(30 * var(--basis-window-size));
+  height: calc(30 * var(--basis-window-size));
   background-color: var(--primary-color);
-  border-radius: calc(8 / var(--basis-window-size) * 100vw);
-  font-size: calc(14 / var(--basis-window-size) * 100vw);
+  border-radius: calc(8 * var(--basis-window-size));
+  font-size: calc(14 * var(--basis-window-size));
   font-weight: bold;
   line-height: 1;
   color: white;
@@ -274,15 +337,15 @@
 .recipe .how_to .item .info {
   display: flex;
   flex-direction: column;
-  gap: calc(5 / var(--basis-window-size) * 100vw);
-  width: calc(100% - (30 / var(--basis-window-size) * 100vw));
+  gap: calc(5 * var(--basis-window-size));
+  width: calc(100% - (30 * var(--basis-window-size)));
 }
 
 .recipe .share_btn {
-  width: calc(280 / var(--basis-window-size) * 100vw);
-  height: calc(50 / var(--basis-window-size) * 100vw);
-  margin: calc(30 / var(--basis-window-size) * 100vw) auto;
-  font-size: calc(16 / var(--basis-window-size) * 100vw);
+  width: calc(280 * var(--basis-window-size));
+  height: calc(50 * var(--basis-window-size));
+  margin: calc(30 * var(--basis-window-size)) auto;
+  font-size: calc(16 * var(--basis-window-size));
   font-weight: bold;
   color: white;
   display: flex;

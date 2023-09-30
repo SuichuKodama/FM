@@ -20,16 +20,16 @@ const storage = firebase.storage();
 
 await enableNetwork(db);
 
-export const getCollectionById = async (postId) => {
+export const getCollectionById = async (recipeId) => {
   try {
-    const documentRef = db.collection("posts").doc(postId);
+    const documentRef = db.collection("recipes").doc(recipeId);
     const doc = await documentRef.get();
     if (doc.exists) {
       let documentData = {
         id: doc.id,
         title: doc.data().title,
         mvURL: doc.data().mvURL,
-        text: doc.data().text,
+        description: doc.data().description,
         date: doc.data().date,
         tags: doc.data().tags,
         materials: doc.data().materials,
@@ -47,7 +47,7 @@ export const getCollectionById = async (postId) => {
 
 export const getStep = async (id) => {
   const step = await db
-    .collection("posts")
+    .collection("recipes")
     .doc(id)
     .collection("step")
     .orderBy("step", "asc");
@@ -78,46 +78,49 @@ export const addPostAsync = async (
   materials
 ) => {
   let date = new Date();
-  // 'posts'というコレクションにデータを追加
-  await db.collection("posts").doc(id).set({
+  // 'recipes'というコレクションにデータを追加
+  await db.collection("recipes").doc(id).set({
     title: title,
     mvURL: mvURL,
-    text: description,
+    description: description,
     date: date,
     tags: tags,
     materials: materials,
   });
 
-  let postRef = db.collection("posts").doc(id);
+  let postRef = db.collection("recipes").doc(id);
   return postRef;
 };
 
 export const addStepAsync = async (id, step) => {
-  const stepDoc = await db.collection("posts").doc(id).collection("step").add({
-    step: step.step, // 連番のステップを設定
-    note: step.note, // レシピステップのテキスト
-    imgURL: step.imgURL, // 画像のファイル名
-  });
+  const stepDoc = await db
+    .collection("recipes")
+    .doc(id)
+    .collection("step")
+    .add({
+      step: step.step, // 連番のステップを設定
+      note: step.note, // レシピステップのテキスト
+      imgURL: step.imgURL, // 画像のファイル名
+    });
 
   return stepDoc;
 };
 
-export const uploadMvImgAsync = async (id, file, mvFile) => {
+export const uploadMvImgAsync = async (recipeId, file) => {
   // ストレージにファイルをアップロード
-  const mvFileRef = storage.ref(`mv/${id}`).child(mvFile.name);
+  const mvFileRef = storage.ref(`/mv/${recipeId}`).child(file.name);
   await mvFileRef.put(file);
   let imgURL = await mvFileRef.getDownloadURL();
   return imgURL;
 };
 
-export const uploadImageAsync = async (postId, file) => {
+export const uploadImageAsync = async (recipeId, file) => {
   // ストレージにファイルをアップロード
-  let imgFileRef = storage.ref(`/step/${postId}`).child(file.name);
+  let imgFileRef = storage.ref(`/step/${recipeId}`).child(file.name);
 
   try {
     // ファイルを Firebase Storage にアップロード
     await imgFileRef.put(file);
-
     // アップロードが完了したら、ダウンロード URL を取得
     let imgURL = await imgFileRef.getDownloadURL();
     return imgURL;
@@ -128,37 +131,36 @@ export const uploadImageAsync = async (postId, file) => {
 
 export const searchAsync = async (keyword) => {
   try {
-    let posts;
+    let recipes;
     if (keyword === null) {
-      posts = await db
-        .collection("posts")
+      recipes = await db
+        .collection("recipes")
         .orderBy("date", "desc")
         .limit(10)
         .get();
-    }
-    else if (keyword.startsWith("#")) {
+    } else if (keyword.startsWith("#")) {
       // コレクション名を指定してクエリを作成
       // "tags" フィールドが指定の文字列と一致する条件
-      posts = await db
-        .collection("posts")
+      recipes = await db
+        .collection("recipes")
         .where("tags", "array-contains", keyword.substring(1))
         .limit(10)
         .get();
     } else {
-      posts = await db
-        .collection("posts")
+      recipes = await db
+        .collection("recipes")
         .where("materials", "array-contains", keyword)
         .limit(10)
         .get();
     }
     // クエリ結果を配列に変換して返す
     let cards = [];
-    posts.forEach((doc) => {
+    recipes.forEach((doc) => {
       cards.push({
         id: doc.id,
         title: doc.data().title,
         mvURL: doc.data().mvURL,
-        text: doc.data().text,
+        description: doc.data().description,
         date: doc.data().date,
         tags: doc.data().tags,
         materials: doc.data().materials,

@@ -12,7 +12,7 @@ function RecipeTop() {
   const [card, setCard] = useState({
     title: "",
     mvURL: "",
-    text: "",
+    description: "",
     materials: [],
   });
 
@@ -37,9 +37,11 @@ function RecipeTop() {
         <img
           src={card.mvURL}
           alt="フライの画像"
-          css={css`width: 100%;`}
+          css={css`
+            width: 100%;
+          `}
         />
-        <div className="text">{card.text}</div>
+        <div className="text">{card.description}</div>
       </div>
       <div className="materials">
         <div className="title">材料</div>

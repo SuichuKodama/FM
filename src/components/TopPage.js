@@ -19,7 +19,6 @@ function TopPage() {
     fetch();
   }, []);
 
-
   const fetch = async () => {
     let keyword = query.get("keyword");
     setKeyword(keyword);
@@ -29,8 +28,6 @@ function TopPage() {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    // navigate(`/search?tag=${word}`);
-    // setWord("");
     const searchResult = await Api.searchAsync(keyword);
     await setCards(searchResult);
   };
@@ -40,22 +37,14 @@ function TopPage() {
       <header className="header">
         <div className="text">Fly Mark</div>
       </header>
-      <nav className="nav_bar">
-        <div className="list">
-          <a href="/input/" className="item">
-            投稿
-          </a>
-        </div>
-      </nav>
-
-      <main className="list_container">
+      <div className="hero_container">
         <section className="hero">
           <div className="container">
-            作りたいフライレシピが見つかる、投稿できる。
+            気になるフライレシピを見つける、投稿する！！
             <br />
             オリジナルのフライレシピを投稿して日本中のフライフィッシャーと繋がろう。
           </div>
-          <div>
+          <div className="input_container">
             <input
               type="text"
               value={keyword}
@@ -64,7 +53,16 @@ function TopPage() {
             />
             <button onClick={handleSearch}>検索</button>
           </div>
+          <nav className="nav_bar">
+            <div className="list">
+              <a href="/input/" className="item">
+                投稿
+              </a>
+            </div>
+          </nav>
         </section>
+      </div>
+      <main className="list_container">
         {/* CardListコンポーネントにcardsステートを渡す */}
         <CardList cards={cards} />
       </main>

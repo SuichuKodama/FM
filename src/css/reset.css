@@ -1,16 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap');
 
-:root {
-  --primary-color: #02004B;
-  --primary-l-color: #182067;
-  --primary-m-color: #1E16FF;
-  --primary-s-color: #DFECF9;
-  --light-blue: #8CF0FF;
-  --yellow: #F2F700;
-  --bg-grey: #F1F5F8;
-  --basis-window-size: 375;
-}
-
 /* Box sizing rules */
 *,
 *::before,
