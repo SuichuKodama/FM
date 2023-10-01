@@ -69,6 +69,42 @@ select {
   font: inherit;
 }
 
+input[type="text"] {
+  padding-block: 0;
+  padding-inline: 0;
+  outline: none;
+  border: none;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+input[type="text"]:focus-visible {
+  outline: none;
+  border: none;
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder{
+  white-space: wrap;
+  color: #888;
+}
+
+button {
+	background: none;
+	border: none;
+	outline: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+textarea {
+  outline: none;
+  border: none;
+  resize: none;
+}
 
 body {
   margin: 0;

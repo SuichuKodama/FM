@@ -37,36 +37,41 @@ function TopPage() {
       <header className="header">
         <div className="text">Fly Mark</div>
       </header>
-      <div className="hero_container">
+      <div className="top_container">
         <section className="hero">
-          <div className="container">
-            気になるフライレシピを見つける、投稿する！！
-            <br />
-            オリジナルのフライレシピを投稿して日本中のフライフィッシャーと繋がろう。
-          </div>
-          <div className="input_container">
-            <input
-              type="text"
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              placeholder="タグ検索"
-            />
-            <button onClick={handleSearch}>検索</button>
-          </div>
-          <nav className="nav_bar">
-            <div className="list">
-              <a href="/input/" className="item">
-                投稿
-              </a>
+          <div className="search_container">
+            <h1 className="heading_title">FlyMark</h1>
+            <div className="lead_container">
+              新しいフライレシピを見つける
+              <br />
+              オリジナルのフライレシピを投稿する
+              <br />
+              まだ知らないレシピを見つけよう
             </div>
-          </nav>
+            <div className="input_container">
+              <input
+                className="input"
+                type="text"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                placeholder="例：#ハゼ #ハゼフライ "
+              />
+              <button className="search_btn" onClick={handleSearch}>
+                検索
+              </button>
+            </div>
+            <nav className="nav_bar">
+              <a href="/input/" className="item">
+                投稿ページ
+              </a>
+            </nav>
+          </div>
         </section>
+        <main className="list_container">
+          {/* CardListコンポーネントにcardsステートを渡す */}
+          <CardList cards={cards} />
+        </main>
       </div>
-      <main className="list_container">
-        {/* CardListコンポーネントにcardsステートを渡す */}
-        <CardList cards={cards} />
-      </main>
-
       <Footer />
     </>
   );
