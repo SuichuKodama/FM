@@ -424,6 +424,10 @@ body {
   left: calc(20 * var(--basis-window-size));
 }
 
+.recipe .fly_info .img {
+  width: 100%;
+}
+
 .recipe .title {
   font-size: calc(16 * var(--basis-window-size));
   font-weight: bold;

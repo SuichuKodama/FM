@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import * as Api from "../service/firebase";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -34,13 +33,7 @@ function RecipeTop() {
     <div>
       <div className="fly_info">
         <div className="name">{card.title}</div>
-        <img
-          src={card.mvURL}
-          alt="フライの画像"
-          css={css`
-            width: 100%;
-          `}
-        />
+        <img className="img" src={card.mvURL} alt="フライの画像" />
         <div className="text">{card.description}</div>
       </div>
       <div className="materials">

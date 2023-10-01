@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
 
 export default function StepList(props) {
@@ -31,15 +29,7 @@ export default function StepList(props) {
               <div className="number"></div>
               <div className="info">
                 <div>{step.note}</div>
-                <img
-                  className="img"
-                  src={step.imgURL}
-                  alt=""
-                  css={css`
-                    width: 100%;
-                    height: auto; // 画像の高さを自動調整
-                  `}
-                />
+                <img className="img" src={step.imgURL} alt="" />
               </div>
             </li>
           );
