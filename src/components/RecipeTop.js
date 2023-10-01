@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import * as Api from "../service/firebase";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";

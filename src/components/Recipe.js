@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import * as Api from "../service/firebase";
 import RecipeTop from "./RecipeTop";
 import Footer from "./Footer";

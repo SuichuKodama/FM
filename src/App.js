@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./service/firebase";
 import TopPage from "./components/TopPage";

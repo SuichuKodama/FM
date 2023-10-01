@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useEffect, useState } from "react";
 import * as Api from "../service/firebase";
 import CardList from "./CardList";
