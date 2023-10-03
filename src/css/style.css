@@ -8,10 +8,11 @@
   --yellow: #F2F700;
   --bg-grey: #F1F5F8;
   --basis-window-size: calc(100vh / 667);
+}
 
-  @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
+  :root {
     width: 100%;
-    /* --basis-window-size: calc(100vw / 375); */
   }
 }
 
@@ -28,8 +29,10 @@ body {
   width: 100%;
   height: calc(40 * var(--basis-window-size));
   background-color: var(--primary-s-color);
+}
 
-  @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
+  .header {
     display: block;
     position: fixed;
     top: 0;
@@ -61,7 +64,11 @@ body {
   bottom: 0;
   z-index: 1;
 
-  @media screen and (max-width: 768px) {
+
+}
+
+@media screen and (max-width: 768px) {
+  .footer {
     position: relative;
     left: auto;
     bottom: auto;
@@ -102,8 +109,10 @@ body {
   justify-content: flex-start;
   align-items: center;
   margin-top: calc(170 * var(--basis-window-size));
+}
 
-  @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
+  .hero {
     width: 100%;
     margin-top: calc(40 * var(--basis-window-size));
   }
@@ -184,9 +193,10 @@ body {
   display: block;
   position: relative;
   bottom: calc(-80 * var(--basis-window-size));
+}
 
-  @media screen and (max-width: 768px) {
-
+@media screen and (max-width: 768px) {
+  .hero .nav_bar {
     bottom: calc(-20 * var(--basis-window-size));
   }
 }
@@ -218,8 +228,10 @@ body {
 
 .nav_bar {
   position: relative;
+}
 
-  @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
+  .nav_bar {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -255,8 +267,10 @@ body {
 --------------------- */
 .list_container {
   padding: calc(40 * var(--basis-window-size)) 0;
+}
 
-  @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
+  .list_container {
     padding: calc(60 * var(--basis-window-size)) 0 calc(40 * var(--basis-window-size));
   }
 }
@@ -269,8 +283,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: calc(20 * var(--basis-window-size)) 0;
+}
 
-  @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
+  .card_list {
     width: 100%;
     margin-left: 0;
     margin-right: 0;
@@ -345,8 +361,10 @@ body {
   align-items: stretch;
   background: url(../img/recipe_bg.webp) center bottom / cover no-repeat;
   position: relative;
+}
 
-  @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
+  .recipe_container {
     height: 100%;
     min-height: 100vh;
     flex-direction: column;
@@ -649,8 +667,10 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
 
-  @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
+  .input_header {
     display: none;
   }
 }
@@ -660,8 +680,10 @@ body {
   letter-spacing: 0.06em;
   color: var(--primary-color);
   font-weight: bold;
+}
 
-  @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
+  .input_header .text {
     font-size: calc(14 * var(--basis-window-size));
     padding: calc(10 * var(--basis-window-size)) calc(15 * var(--basis-window-size));
   }
@@ -678,8 +700,10 @@ body {
   overflow: auto;
   position: relative;
   z-index: 1;
+}
 
-  @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
+  .input_window {
     width: 100%;
     margin-left: 0;
     margin-right: 0;
@@ -936,8 +960,10 @@ body {
   position: fixed;
   left: 0;
   bottom: calc(200 * var(--basis-window-size));
+}
 
-  @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
+  .input_footer {
     width: 100%;
     position: static;
     bottom: auto;
