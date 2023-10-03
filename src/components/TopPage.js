@@ -45,7 +45,7 @@ function TopPage() {
               <br />
               オリジナルのフライレシピを投稿する
               <br />
-              まだ知らないレシピを見つけよう
+              まだ知らないレシピに出会おう
             </div>
             <div className="input_container">
               <input
