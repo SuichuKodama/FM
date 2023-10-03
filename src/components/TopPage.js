@@ -33,9 +33,9 @@ function TopPage() {
 
   return (
     <>
-      <header className="header">
+      {/* <header className="header">
         <div className="text">Fly Mark</div>
-      </header>
+      </header> */}
       <div className="top_container">
         <section className="hero">
           <div className="search_container">
@@ -71,7 +71,6 @@ function TopPage() {
           <CardList cards={cards} />
         </main>
       </div>
-      <Footer />
     </>
   );
 }

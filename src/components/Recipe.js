@@ -21,12 +21,13 @@ function Recipe() {
 
   return (
     <>
-      <header className="header">
-        <div className="text">Fly Mark</div>
-      </header>
       <div className="recipe_container">
+        <section className="recipe">
+          <RecipeTop />
+          <StepList steps={steps} />
+        </section>
         <div className="side_container">
-          <nav className="nav_bar">
+          <nav className="recipe_nav_bar">
             <div className="recipe_btn_list">
               <a href="/" className="top_btn">
                 トップ
@@ -37,15 +38,7 @@ function Recipe() {
             </div>
           </nav>
         </div>
-        <section className="recipe">
-          <RecipeTop />
-          <StepList steps={steps} />
-          <div>
-            <button className="share_btn">リンクコピー</button>
-          </div>
-        </section>
       </div>
-      <Footer />
     </>
   );
 }
