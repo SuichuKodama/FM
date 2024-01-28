@@ -1,74 +1,64 @@
-import React, { useEffect, useState } from "react";
-import * as Api from "../service/firebase";
-import CardList from "./CardList";
-import Footer from "./Footer";
-import { useLocation } from "react-router-dom";
+import React, { useCallback, useState } from 'react';
+import * as Api from '../service/firebase';
+import CardList from './CardList';
+import useSWR from 'swr';
+import { Link } from 'react-router-dom';
+
+const fetcher = (keyword) => {
+  return Api.searchAsync(keyword);
+};
 
 function TopPage() {
-  // cardsステートをuseStateを使用して初期化
-  const [cards, setCards] = useState([]);
-  // const [searchResults, setSearchResults] = useState([]);
-  const [keyword, setKeyword] = useState("");
-  const location = useLocation();
-  const searchQuery = location.search;
-  const query = new URLSearchParams(searchQuery);
+  const query = new URLSearchParams();
+  const [keyword, setKeyword] = useState(query.get('keyword') ?? '');
+  const [input, setInput] = useState('');
+  const { data } = useSWR(keyword, fetcher);
 
-  // Post取得
-  useEffect(() => {
-    fetch();
+  const handleChangeInput = useCallback((e) => {
+    setInput(e.target.value);
   }, []);
 
-  const fetch = async () => {
-    let keyword = query.get("keyword");
-    setKeyword(keyword);
-    const data = await Api.searchAsync(keyword);
-    await setCards(data);
-  };
-
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    const searchResult = await Api.searchAsync(keyword);
-    await setCards(searchResult);
-  };
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      setKeyword(input);
+    },
+    [input]
+  );
 
   return (
     <>
-      {/* <header className="header">
-        <div className="text">Fly Mark</div>
-      </header> */}
-      <div className="top_container">
-        <section className="hero">
-          <div className="search_container">
-            <h1 className="heading_title">FlyMark</h1>
-            <div className="lead_container">
+      <div className='top_container'>
+        <section className='hero'>
+          <div className='search_container'>
+            <h1 className='heading_title'>FlyMark</h1>
+            <div className='lead_container'>
               新しいフライレシピを見つける
               <br />
               オリジナルのフライレシピを投稿する
               <br />
               まだ知らないレシピに出会おう
             </div>
-            <div className="input_container">
+            <form className='input_container' onSubmit={handleSubmit}>
               <input
-                className="input"
-                type="text"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-                placeholder="例：#ハゼ #ハゼフライ "
+                className='input'
+                type='text'
+                value={input}
+                onChange={handleChangeInput}
+                placeholder='例：#ハゼ #ハゼフライ '
               />
-              <button className="search_btn" onClick={handleSearch}>
-                検索
-              </button>
-            </div>
-            <nav className="nav_bar">
-              <a href="/input/" className="item">
+              <button className='search_btn'>検索</button>
+            </form>
+            <nav className='nav_bar'>
+              <Link to='/input/' className='item'>
                 投稿ページ
-              </a>
+              </Link>
             </nav>
           </div>
         </section>
-        <main className="list_container">
+        <main className='list_container'>
           {/* CardListコンポーネントにcardsステートを渡す */}
-          <CardList cards={cards} />
+          {data && <CardList cards={data} />}
         </main>
       </div>
     </>

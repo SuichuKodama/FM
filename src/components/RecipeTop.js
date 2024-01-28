@@ -1,46 +1,35 @@
-import * as Api from "../service/firebase";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import * as Api from '../service/firebase';
+import { useEffect } from 'react';
+import { useParams } from 'react-router';
+import useSWR from 'swr';
+
+const fetcher = (postId) => {
+  return Api.getCollectionById(postId);
+};
 
 function RecipeTop() {
-  let { id } = useParams();
-  const postId = id;
-
-  // cardsステートをuseStateを使用して初期化
-  const [card, setCard] = useState({
-    title: "",
-    mvURL: "",
-    description: "",
-    materials: [],
-  });
+  const { id: postId } = useParams();
+  const { data: card, isLoading } = useSWR(postId, fetcher);
 
   useEffect(() => {
-    fetchCard();
-  }, []);
-
-  const fetchCard = async () => {
-    const post = await Api.getCollectionById(postId);
-    if (post) {
-      console.log(post);
-      await setCard(post);
-    } else {
-      console.log("指定されたドキュメントが存在しません。");
+    if (!isLoading && !card) {
+      console.log('指定されたドキュメントが存在しません。');
     }
-  };
+  }, [card, isLoading]);
 
   return (
     <div>
-      <div className="fly_info">
-        <div className="name">{card.title}</div>
-        <img className="img" src={card.mvURL} alt="フライの画像" />
-        <div className="text">{card.description}</div>
+      <div className='fly_info'>
+        <div className='name'>{card.title}</div>
+        <img className='img' src={card.mvURL} alt='フライの画像' />
+        <div className='text'>{card.description}</div>
       </div>
-      <div className="materials">
-        <div className="title">材料</div>
-        <ul className="list">
+      <div className='materials'>
+        <div className='title'>材料</div>
+        <ul className='list'>
           {card.materials &&
             card.materials.map((material) => {
-              return <li className="item">{material}</li>;
+              return <li className='item'>{material}</li>;
             })}
         </ul>
       </div>
