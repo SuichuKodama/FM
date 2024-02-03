@@ -1,51 +1,60 @@
-import React, { useEffect, useState } from "react";
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import { Link } from 'react-router-dom';
 
 export default function CardList(props) {
-  const [cardList, setCardList] = useState([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      const fetchedCards = await Promise.all(
-        props.cards.map(async (card) => {
-          return {
-            id: card.id,
-            mvURL: card.mvURL,
-            title: card.title,
-            description: card.description,
-            materials: card.materials,
-            tags: card.tags,
-          };
-        })
-      );
-      setCardList(fetchedCards);
-    }
-    fetchData();
-  }, [props.cards]);
-
   return (
     <section>
-      <div className="card_list">
-        {cardList.map((card) => (
-          <a key={card.id} href={"/recipe/" + card.id} className="card">
-            <img className="main_image" src={card.mvURL} alt="フライの画像" />
-            <div className="title">{card.title}</div>
-            <div className="text">{card.description}</div>
-            <div className="tag_list">
+      <div className='card_list'>
+        {props.cards.map((card) => (
+          <div
+            css={css`
+              position: relative;
+            `}
+            key={card.id}
+            href={'/recipe/' + card.id}
+            className='card'
+          >
+            <Link
+              css={css`
+                position: absolute;
+                inset: 0;
+              `}
+              to={'/recipe/' + card.id}
+            />
+            <img className='main_image' src={card.mvURL} alt='フライの画像' />
+            <div className='title'>{card.title}</div>
+            <div className='text'>{card.description}</div>
+            <div className='tag_list'>
               {card.materials.map((tag) => (
-                <a className="material" href={"?keyword=" + tag} key={tag}>
+                <Link
+                  css={css`
+                    z-index: 1;
+                  `}
+                  className='material'
+                  href={'?keyword=' + tag}
+                  key={tag}
+                >
                   <span>{tag}</span>
-                </a>
+                </Link>
               ))}
             </div>
-            <div className="tag_list">
+            <div className='tag_list'>
               {card.tags.map((tag) => (
-                <a className="tag" href={"?keyword=%23" + tag} key={tag}>
+                <Link
+                  css={css`
+                    z-index: 1;
+                  `}
+                  className='tag'
+                  href={'?keyword=%23' + tag}
+                  key={tag}
+                >
                   <span>#</span>
                   <span>{tag}</span>
-                </a>
+                </Link>
               ))}
             </div>
-          </a>
+          </div>
         ))}
       </div>
     </section>
